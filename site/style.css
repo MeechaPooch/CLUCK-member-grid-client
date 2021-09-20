@@ -16,7 +16,10 @@
     src: url(fonts/tcm.ttf);
 }
 
-
+body{
+    background-image: url('img/bg-grid.png'); 
+    background-size:contain;
+}
 
 :root {
     --width:10;
@@ -28,7 +31,7 @@
     margin:10px;
     display:grid;
     grid-template-columns: repeat(var(--width),1fr);
-    grid-template-rows: repeat(var(--height),1fr);
+    grid-template-rows: repeat(var(--height),1fr);  
 }   
 
 /* .button-in {

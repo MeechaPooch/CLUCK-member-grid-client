@@ -1,11 +1,13 @@
+let buttonJustPressed = false;
+
 // import { signin_secret, token, bruh } from './secrets.js'
 const importit = (module) => { return new Promise(ret => { require([module], ret) }) }
 
 // Shiffle list code yoinked from online
-function shuffle(array) { let currentIndex = array.length, randomIndex; while (currentIndex != 0) {randomIndex = Math.floor(Math.random() * currentIndex); currentIndex--; [array[currentIndex], array[randomIndex]] = [ array[randomIndex], array[currentIndex]]; } return array; }
+function shuffle(array) { let currentIndex = array.length, randomIndex; while (currentIndex != 0) { randomIndex = Math.floor(Math.random() * currentIndex); currentIndex--;[array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]]; } return array; }
 
 async function run() {
-    const {clock} = await importit('./scripts/clockapi.js')
+    const { clock, cluckedIn } = await importit('./scripts/clockapi.js')
     const { token } = await importit('../vars/secrets.js')
 
 
@@ -22,18 +24,18 @@ async function run() {
     // Setup Randomized Button Style Options
     const horizPos =
     {
-        left: [{ styleName: 'right', val: 'auto' },{styleName:'border-top-left-radius', val:0},{styleName:'border-bottom-left-radius', val:0},],
-        right: [{ styleName: 'left', val: 'auto' },{styleName:'border-top-right-radius', val:0},{styleName:'border-bottom-right-radius', val:0},],
+        left: [{ styleName: 'right', val: 'auto' }, { styleName: 'border-top-left-radius', val: 0 }, { styleName: 'border-bottom-left-radius', val: 0 },],
+        right: [{ styleName: 'left', val: 'auto' }, { styleName: 'border-top-right-radius', val: 0 }, { styleName: 'border-bottom-right-radius', val: 0 },],
         center: []
     }
     const verticalPos =
     {
-        top: [{styleName:'border-top-right-radus', val:0},{styleName:'border-top-left-radus', val:0},],
-        bottom: [{ styleName: 'bottom', 'val': 0 }, {styleName:'border-bottom-right-radius', val:0},{styleName:'border-bottom-left-radius', val:0},]
+        top: [{ styleName: 'border-top-right-radus', val: 0 }, { styleName: 'border-top-left-radus', val: 0 },],
+        bottom: [{ styleName: 'bottom', 'val': 0 }, { styleName: 'border-bottom-right-radius', val: 0 }, { styleName: 'border-bottom-left-radius', val: 0 },]
     }
     const font =
     {
-        gilroy:[{styleName:'font-family',val:'gilroy'}],
+        gilroy: [{ styleName: 'font-family', val: 'gilroy' }],
         cocogoose: [{ styleName: 'font-family', val: 'cocogoose' }],
         tcm: [{ styleName: 'font-family', val: 'tcm' }],
         basics: [{ styleName: 'font-family', val: 'basics-serif' }],
@@ -55,14 +57,16 @@ async function run() {
     // Make member buttons 
     members.forEach(member => {
         // Init button
-        memberButton = document.createElement(null);
+        memberButton = document.createElement('person-button');
         memberButton.fullname = member.name;
+        memberButton.id = member.fullname
 
         // Set click toggle
         memberButton.onclick = (click) => {
+            buttonJustPressed = true;
             // Go up path to find button object
             click.path.forEach(button => {
-                if (button.className != 'button-in') { return }   
+                if (button.className != 'button-in') { return }
                 // Toggle logged in             
                 button.loggedIn = !button.loggedIn
                 // Update style
@@ -70,12 +74,12 @@ async function run() {
                     button.style.setProperty(styleSpec.styleName, styleSpec.val)
                 })
                 // Cluck API Call
-                clock(button.fullname,button.loggedIn)
+                clock(button.fullname, button.loggedIn)
             })
         }
 
         // Add name text
-        text = document.createElement(null)
+        text = document.createElement('person-name')
         text.className = 'button-text'
         text.innerHTML = member.firstname
 
@@ -92,12 +96,51 @@ async function run() {
         // Do other adding and styling things
         memberButton.appendChild(text)
         memberButton.style.setProperty('background-image', `url(${member.img})`)
-        if(!member.img) {memberButton.style.setProperty('background-image', `url(img/defpic.jpg)`)}
+        if (!member.img) { memberButton.style.setProperty('background-image', `url(img/defpic.jpg)`) }
         memberButton.className = 'button-in'
 
         // Add button
         document.getElementById('button-grid').appendChild(memberButton)
     })
+
+
+
+
+
+
+    //////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+    // Update logged in every 30 seconds
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    while (true) {
+        // Get data and update buttons
+        // Query data to map of { Name:TimeCluckedIn } 
+        let membersIn = cluckedIn()
+        // Update buttons
+        let buttons = document.getElementsByTagName('person-button')
+        for (let i = 0; i < buttons.length; i++) {
+            let button = buttons[i]
+            button.loggedIn = button.fullname in membersIn
+            buttonStates[button.loggedIn].forEach(styleSpec => {
+                button.style.setProperty(styleSpec.styleName, styleSpec.val)
+
+            })
+        }
+        await sleep(5000)
+        while(buttonJustPressed) {
+            buttonJustPressed = false;
+            await sleep(2000);
+        }
+    }
 
 }
 run()
