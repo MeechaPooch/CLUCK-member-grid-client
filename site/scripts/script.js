@@ -50,7 +50,7 @@ async function run() {
         ],
         true: [
             { styleName: 'filter', val: 'grayscale(0%)' },
-            { styleName: 'box-shadow', val: 'inset 0 0 0 1000px rgba(255, 255, 255, 0.0), 0px 0px 20px rgb(0, 255, 136)' },
+            { styleName: 'box-shadow', val: 'inset 0 0 0 1000px rgba(255, 255, 255, 0.0), 0px 0px 15px 7px rgb(0, 255, 136)' },
         ]
     }
 

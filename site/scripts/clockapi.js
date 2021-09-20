@@ -1,27 +1,28 @@
-const api_server = 'https://boiiii.team1540.org'
+const api_server = 'https://boiiii.team1540.org:4000'
 
 define({
     clock: async (name, clockingIn) => {
-        let res = await fetch(api_server+'/clockapi/id?name='+encodeURIComponent(name), {
-            method: 'GET'
-        })
-        let json = await res.json()
-        let id = json.id;
 
-
-        res = await fetch(api_server+'/clockapi/clock', {
-            method: 'POST',
-            mode: 'cors',
-            body: {
-                user: id,
-                clockingIn: clockingIn
-            }
-        });
-        json = await res.json();
-        console.log(json);
+        let res = await fetch(`${api_server}/clock?name=${encodeURIComponent(name)}&loggingin=${encodeURIComponent(clockingIn)}`)
+        console.log(res.body)
+        // let res = await fetch(api_server+'/clockapi/id?name='+encodeURIComponent(name), {
+        //     method: 'GET'
+        // })
+        // let json = await res.json()
+        // let id = json.id;
+        // res = await fetch(api_server+'/clock', {
+        //     method: 'POST',
+        //     mode: 'cors',
+        //     body: {
+        //         user: id,
+        //         clockingIn: clockingIn
+        //     }
+        // });
+        // json = await res.json();
+        // console.log(json);
     },
     cluckedIn: async ()=>{
-        let res = await fetch(api_server+"timesheet/loggedin")
+        let res = await fetch(api_server+"/loggedin")
         let json = await res.json()
         return json;
     }
