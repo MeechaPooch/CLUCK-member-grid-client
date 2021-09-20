@@ -1,10 +1,10 @@
-const api_server = 'https://boiiii.team1540.org:4000'
+// const api_server = 'https://team1540.catlin.edu:4000'
+const api_server = 'http://localhost:4000'
 
 define({
     clock: async (name, clockingIn) => {
 
         let res = await fetch(`${api_server}/clock?name=${encodeURIComponent(name)}&loggingin=${encodeURIComponent(clockingIn)}`)
-        console.log(res.body)
         // let res = await fetch(api_server+'/clockapi/id?name='+encodeURIComponent(name), {
         //     method: 'GET'
         // })
@@ -24,6 +24,7 @@ define({
     cluckedIn: async ()=>{
         let res = await fetch(api_server+"/loggedin")
         let json = await res.json()
+        console.log(json)
         return json;
     }
     // clockIn: async (name)=>{
