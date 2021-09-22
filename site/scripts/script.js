@@ -1,18 +1,23 @@
 let buttonJustPressed = false;
 
 // import { signin_secret, token, bruh } from './secrets.js'
-const importit = (module) => { return new Promise(ret => { require([module], ret) }) }
+// const importit = (module) => { return new Promise(ret => { require([module], ret) }) }
 
 // Shiffle list code yoinked from online
 function shuffle(array) { let currentIndex = array.length, randomIndex; while (currentIndex != 0) { randomIndex = Math.floor(Math.random() * currentIndex); currentIndex--;[array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]]; } return array; }
 
+function fullscreen() {
+    let elem = document.documentElement
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.webkitRequestFullscreen) { /* Safari */
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { /* IE11 */
+        elem.msRequestFullscreen();
+    }
+}
+
 async function run() {
-    const { clock, cluckedIn } = await importit('./scripts/clockapi.js')
-    const { token } = await importit('../vars/secrets.js')
-
-
-    let { members } = await importit('../vars/members.js')
-
     // Calculate & Set grid size
     root = Math.sqrt(members.length)
     wid = Math.ceil(root)
@@ -63,6 +68,8 @@ async function run() {
 
         // Set click toggle
         memberButton.onclick = (click) => {
+            // fullscreen()
+
             buttonJustPressed = true;
             // Go up path to find button object
             click.path.forEach(button => {
