@@ -60,4 +60,4 @@ names.forEach(name=>{
     }
 })
 
-writeFileSync('../vars/members.js','define({members: '+JSON.stringify(members)+' })')
+writeFileSync('../vars/members.js','const members = '+JSON.stringify(members)+';')
