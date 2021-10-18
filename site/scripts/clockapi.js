@@ -25,6 +25,14 @@ const cluckedIn = async () => {
     console.log(json)
     return json;
 }
+const ping = async () => {
+    try {
+        let res = await fetch(api_server + "/ping")
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
     // clockIn: async (name)=>{
     //    let res = await fetch('https://jsonplaceholder.typicode.com/todos/1', {
     //        method:'PUT',

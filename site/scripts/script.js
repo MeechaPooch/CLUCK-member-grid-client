@@ -112,7 +112,17 @@ async function run() {
 
 
 
+    //////////////////////////////////////////////////////////////////////////
+    // Test CONNECTIVITY
 
+    let noconnect = document.getElementById('noconnect');
+    setInterval(async ()=>{
+        if(await ping()) {
+            noconnect.style.setProperty('visibility','hidden')
+        } else {
+            noconnect.style.setProperty('visibility','visible')
+        }
+    },1000)
 
 
     //////////////////////////////////////////////////////////////////////////

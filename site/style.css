@@ -20,6 +20,22 @@ body{
     background-image: url('img/bg-grid.png'); 
     background-size:contain;
 }
+noconnect{
+    position:absolute;
+    background-color: red;
+    font-size: 400%;
+    color: white;
+    height:60%;
+    width: 100%;;
+    text-align: center;
+    z-index: 100;
+    left: 0%;
+    vertical-align: middle;
+    line-height: 800%;  
+    top: 15%;
+    visibility: hidden;
+    /* : 0px; */
+}
 
 :root {
     --width:10;
